@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { startGame } from '../../actions';
 import {  getIterableBoard } from '../../utils';
@@ -10,7 +10,8 @@ export default function Board() {
   const columns = useSelector(state => state.columns);
   const bombs = useSelector(state => state.bombs);
   const clicks = useSelector(state => state.clicks);
-  const canCreateBoard = rows && columns && bombs;
+  const canCreateBoard = Boolean(rows && columns && bombs);
+
   const dispatch = useDispatch();
 
   useEffect(() => {

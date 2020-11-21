@@ -39,7 +39,7 @@ const Tile = (props) => {
   const onContextMenu = ev => {
     ev.preventDefault();
 
-    if (gameOver){
+    if (gameOver || tile.show){
       return false;
     }
 
@@ -55,11 +55,11 @@ const Tile = (props) => {
   const classes = classnames('tile', {
     'show': tile.show,
     'with-flag': tile.hasFlag,
-    'with-bomb': tile.isBomb,
+    'with-bomb': tile.isBomb && tile.show,
   });
 
   return (
-    <button disabled={tile.show || gameOver} className={classes} onClick={onClick} onContextMenu={onContextMenu}>
+    <button role='button' disabled={tile.show || gameOver} className={classes} onClick={onClick} onContextMenu={onContextMenu}>
       {tile.show && tile.isBomb && <span>b</span>}
       {tile.show && !!tile.number && !tile.isBomb && <span>{tile.number}</span>}
     </button>

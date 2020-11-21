@@ -12,16 +12,25 @@ export default function Options() {
     columns: 30,
     bombs: 100,
   });
-  const canSubmit = state.rows && state.columns && state.bombs;
+  const bombsLimit = (state.columns * state.rows) - 2;
+  const canSubmit = state.rows && state.columns && state.bombs && state.bombs <= bombsLimit;
+  const shouldHideOptions = rows && columns && bombs;
 
-  if (rows && columns && bombs) {
+  if (shouldHideOptions) {
     return null;
-  };
+  }
 
   const onChange = (ev) => {
+    const { name, value } = ev.target;
+    let newValue = value ? parseInt(value, 10) : 0;
+
+    if (name === 'bombs' && newValue > bombsLimit) {
+      newValue = bombsLimit;
+    }
+
     setState((prevState) => ({
       ...prevState,
-      [ev.target.name]: ev.target.value ? parseInt(ev.target.value, 10) : 0,
+      [name]: newValue,
     }));
   };
 
@@ -37,17 +46,17 @@ export default function Options() {
       </header>
       <label>
         number of rows:
-        <input type="number" name='rows' placeholder='Rows' onChange={onChange} value={state.rows} />
+        <input type="number" name='rows' aria-label='rows' placeholder='Rows' onChange={onChange} value={state.rows} />
       </label>
       <label>
         number of columns:
-        <input type="number" name='columns' placeholder='Columns' onChange={onChange} value={state.columns} />
+        <input type="number" name='columns' aria-label='columns' placeholder='Columns' onChange={onChange} value={state.columns} />
       </label>
       <label>
         number of bombs:
-        <input type="number" name='bombs' placeholder='Bombs' onChange={onChange} value={state.bombs} />
+        <input type="number" max={state.columns * state.rows - 1} name='bombs' aria-label='bombs' placeholder='Bombs' onChange={onChange} value={state.bombs} />
       </label>
-      <button className='options-btn' disabled={!canSubmit} onClick={onClick}>save</button>
+      <button role='button' className='options-btn' disabled={!canSubmit} onClick={onClick}>start</button>
     </div>
   );
 };

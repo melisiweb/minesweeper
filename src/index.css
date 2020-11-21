@@ -99,6 +99,10 @@ label {
   font-weight: bold;
 }
 
+.options-btn:disabled {
+  background-color: #999;
+}
+
 .row {
   display: flex;
 }
